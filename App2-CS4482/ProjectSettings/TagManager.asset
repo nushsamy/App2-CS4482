@@ -9,6 +9,10 @@ TagManager:
   - Wall
   - Box
   - Boundary
+  - BlockedWall
+  - Button
+  - Door
+  - Key
   layers:
   - Default
   - TransparentFX

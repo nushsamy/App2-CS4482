@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private float jump = 10f;
     private bool isFacingRight = true;
     private bool isGrounded;
+    private bool isKeyFound;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -57,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("collided");
 
         if(collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Box")
         {
@@ -69,6 +69,17 @@ public class PlayerMovement : MonoBehaviour
 
                 }
             }
+        }
+
+        if(collision.gameObject.tag == "Key")
+        {
+            Destroy(collision.gameObject);
+            isKeyFound = true;
+        }
+
+        if(collision.gameObject.tag == "Door" && isKeyFound)
+        {
+            Destroy(collision.gameObject);
         }
     }
 }
