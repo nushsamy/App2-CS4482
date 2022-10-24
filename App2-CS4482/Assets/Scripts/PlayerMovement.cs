@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,12 +15,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isKeyFound;
 
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
 
     // Start is called before the first frame update
     void Start()
     {
+       Debug.Log(PlayerName.finalPlayerName);
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded)
         {
             Debug.Log(isGrounded);
             rb.velocity = new Vector2(rb.velocity.x, jump);
@@ -81,5 +83,25 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.tag == "Finish")
+        {
+            onComplete();
+        }
+    }
+
+    private void onComplete()
+    {
+
+        float score = TimerScript.timeRemaining;
+        TimerScript.timerIsRunning = false;
+        Debug.Log(score);
+        PlayerName.gameComplete = true;
+        SceneManager.LoadScene("Leaderboard");
+
     }
 }
